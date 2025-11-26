@@ -15,9 +15,10 @@
 
 logging:
   level:
-    ROOT: DEBUG
-    tech.jhipster: DEBUG
-    org.hibernate.SQL: DEBUG
+    ROOT: INFO
+    tech.jhipster: INFO
+    org.hibernate.SQL: INFO
+    javax.management.remote.rmi: OFF
     com.ecommerce.cart: DEBUG
 
 management:
@@ -59,14 +60,56 @@ spring:
       port: 8500
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/CartService
-    username: CartService
-    password:
+    url: jdbc:postgresql://26.150.87.115:5432/cartdb
+    username: postgres
+    password: 12345
     hikari:
       poolName: Hikari
       auto-commit: false
   elasticsearch:
-    uris: http://localhost:9200
+    uris: http://26.150.87.115:9200
+    connection-timeout: 5s
+    socket-timeout: 30s
+  minio:
+    url: http://26.150.87.115:9100
+    access-key: admin
+    secret-key: admin12345
+    bucket: ecommerce-product-media
+  kafka:
+    bootstrap-servers: 26.150.87.115:9092
+    listener:
+      ack-mode: manual_immediate
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+      acks: all
+      batch-size: 16384
+      properties:
+        security.protocol: PLAINTEXT
+        delivery.timeout.ms: 60000
+        request.timeout.ms: 30000
+        max.block.ms: 30000
+        linger.ms: 5
+        enable.idempotence: true
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: webhook-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+  data:
+    redis:
+      host: 26.150.87.115
+      port: 6379
+      database: 1
+      password:
+    mongodb:
+      uri: mongodb://26.150.87.115:27017/ecommerce_db
+
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
@@ -90,7 +133,7 @@ jhipster:
   cache: # Cache configuration
     redis: # Redis configuration
       expiration: 3600 # By default objects stay 1 hour (in seconds) in the cache
-      server: redis://localhost:6379
+      server: redis://26.150.87.115:6379
       cluster: false
       # server: redis://localhost:6379,redis://localhost:16379,redis://localhost:26379
       # cluster: true

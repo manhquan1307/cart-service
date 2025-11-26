@@ -119,21 +119,20 @@ spring:
         binder:
           replicationFactor: 1
           auto-create-topics: true
-          brokers: localhost:9092
       bindings:
         binding-out-0:
-          content-type: text/plain
+          content-type: application/json
           group: cart-service
         kafkaConsumer-in-0:
           destination: sse-topic
-          content-type: text/plain
+          content-type: application/json
           group: cart-service
         kafkaProducer-out-0:
-          content-type: text/plain
+          content-type: application/json
           group: cart-service
   docker:
     compose:
-      enabled: true
+      enabled: false
       lifecycle-management: start-only
       file: src/main/docker/postgresql.yml
   profiles:
