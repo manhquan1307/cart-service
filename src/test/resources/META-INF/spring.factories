@@ -1,0 +1,6 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    com.ecommerce.cart.config.\
+    SqlTestContainersSpringContextCustomizerFactory,com.ecommerce.cart.config.\
+    TestContainersSpringContextCustomizerFactory,com.ecommerce.cart.config.\
+    RedisTestContainersSpringContextCustomizerFactory,com.ecommerce.cart.config.\
+    KafkaTestContainersSpringContextCustomizerFactory
